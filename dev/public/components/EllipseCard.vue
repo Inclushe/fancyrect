@@ -1,24 +1,24 @@
 <template lang="pug">
-  .card.card--rect
+  .card.card--ellipse
     .container
       .row.row--title
         div
           div.icon--rect
-          h1 Rect
+          h1 Ellipse
         button(@click="$emit('getridofme')") Delete
       .row.row--input
         .input-field
-          label(for="posX") X
+          label(for="posX") Center X
           input(type="number" v-model="posX" id="posX" @change="$emit('hey')")
         .input-field
-          label(for="posY") Y
+          label(for="posY") Center Y
           input(type="number" v-model="posY" id="posY" @change="$emit('hey')")
       .row.row--input
         .input-field
-          label(for="height") Height
+          label(for="height") Radius X
           input(type="number" v-model="height" id="height" @change="$emit('hey')")
         .input-field
-          label(for="width") Width
+          label(for="width") Radius Y
           input(type="number" v-model="width" id="width" @change="$emit('hey')")
       .row.row--input
         .input-field
@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     elCode: function () {
-      return `<rect x="${this.posX}" y="${this.posY}" width="${this.width}" height="${this.height}" fill="${this.fill}" stroke="${this.stroke}" stroke-width="${this.strokeWidth}"/>`
+      return `<ellipse cx="${this.posX}" cy="${this.posY}" ry="${this.width}" rx="${this.height}" fill="${this.fill}" stroke="${this.stroke}" stroke-width="${this.strokeWidth}"/>`
     }
   },
   created: function () {

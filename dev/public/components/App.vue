@@ -1,12 +1,12 @@
 <template lang="pug">
-  //- .container
-  .row
+  main.row
     .col.stages
       .svg-stage(v-html="svgCode") {{ svgCode }}
       .background-stage(v-bind:style="{ background: `url('${svgBackground}')`, height: stageHeight + 'px', width: stageWidth + 'px' }")
-    .col
+    .col.options
       .buttons
         button(@click="insert('RectCard')") Create New Rect
+        button(@click="insert('EllipseCard')") Create New Ellipse
       .cards
         div
           .card.card--stage
@@ -32,12 +32,14 @@
                 .input-field
                   label(for="backgroundColor") Background Color
                   input(type="color" v-model="backgroundColor" id="backgroundColor")
+                  input(type="text" v-model="backgroundColor" id="backgroundColor")
         div(v-for="(card, index) in cards" :key="card.index")
           component(:is="card.type" @hey="update" @getridofme="getrid(index)")
 </template>
 
 <script>
 import RectCard from './RectCard'
+import EllipseCard from './EllipseCard'
 
 export default {
   data: function () {
@@ -77,38 +79,46 @@ export default {
     }
   },
   components: {
-    RectCard
-  },
-  mounted() {
-    for (let v in this._data) {
-      if (localStorage[v]) {
-        if (v == 'cards') {
-          this.cards = JSON.parse(localStorage.cards)
-        } else {
-          this[v] = localStorage[v]
-        }
-      }
-    }
-  },
-  watch: {
-    height: function (newVal) {localStorage.height = newVal},
-    width: function (newVal) {localStorage.width = newVal},
-    backgroundColor: function (newVal) {localStorage.backgroundColor = newVal},
-    stageHeight: function (newVal) {localStorage.stageHeight = newVal},
-    stageWidth: function (newVal) {localStorage.stageWidth = newVal},
-    cards: function (newVal) {localStorage.cards = JSON.stringify(newVal)},
-    childElements: function (newVal) {localStorage.childElements = newVal},
-    id: function (newVal) {localStorage.id = newVal}
+    RectCard, EllipseCard
   }
+  // mounted() {
+  //   for (let v in this._data) {
+  //     if (localStorage[v]) {
+  //       if (v == 'cards') {
+  //         this.cards = JSON.parse(localStorage.cards)
+  //       } else {
+  //         this[v] = localStorage[v]
+  //       }
+  //     }
+  //   }
+  //   if (localStorage['$children']) {
+  //     this.$children = JSON.parse(localStorage['$children'])
+  //   }
+  // },
+  // watch: {
+  //   height: function (newVal) {localStorage.height = newVal},
+  //   width: function (newVal) {localStorage.width = newVal},
+  //   backgroundColor: function (newVal) {localStorage.backgroundColor = newVal},
+  //   stageHeight: function (newVal) {localStorage.stageHeight = newVal},
+  //   stageWidth: function (newVal) {localStorage.stageWidth = newVal},
+  //   cards: function (newVal) {localStorage.cards = JSON.stringify(newVal); localStorage.$children = JSON.stringify(this.$children)},
+  //   childElements: function (newVal) {localStorage.childElements = newVal},
+  //   id: function (newVal) {localStorage.id = newVal},
+  // }
 }
 </script>
 
 <style lang="stylus">
+  main.container
+    height: 100vh
   .stages
     display: flex
     justify-content: space-around
     align-items: center
     flex-direction: column
+  .options
+    max-height: 100vh
+    overflow: scroll
   .card
     font: 1em/1.5 'Iosevka', monospace
     background: white
