@@ -5,11 +5,13 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
 
 @TODO:
 
-- [ ] Fix Layout Issues
+- [X] Fix Layout Issues
 - [ ] Add Auto-Save Feature
 - [ ] Decide to Add New Shapes
   - [ ] Line
   - [ ] Polygon
+- [ ] Fix Updating Background
+  - Debouncing?
 - [ ] Improve CSS
 - [ ] Add Download Links
-- [ ] Add Logo
+- [X] Add Logo

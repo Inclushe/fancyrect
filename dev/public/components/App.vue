@@ -1,9 +1,16 @@
 <template lang="pug">
-  main.row
-    .col.stages
-      .svg-stage(v-html="svgCode") {{ svgCode }}
-      .background-stage(v-bind:style="{ background: `url('${svgBackground}')`, height: stageHeight + 'px', width: stageWidth + 'px' }")
-    .col.options
+
+  main.container
+    .content
+      .title
+        img(src="../images/logo.svg" height="64" width="64")
+        h1 Fancy Rect
+      .stages
+        .svg-stage(v-html="svgCode") {{ svgCode }}
+        .background-stage(v-bind:style="{ background: `url('${svgBackground}')`, height: stageHeight + 'px', width: stageWidth + 'px' }")
+      .download
+        a(href="#" @click="download()") Download Pattern (SVG)
+    .options
       .buttons
         button(@click="insert('RectCard')") Create New Rect
         button(@click="insert('EllipseCard')") Create New Ellipse
@@ -110,17 +117,39 @@ export default {
 
 <style lang="stylus">
   main.container
-    height: 100vh
-  .stages
+    height: 100%
+    width: 100%
+    padding-top: 2em
     display: flex
     justify-content: space-around
+  .content
+    display: flex
+    justify-content: space-between
     align-items: center
     flex-direction: column
+    .title
+      height: 3rem
+      img
+        vertical-align: middle
+        margin-right: 0.5em
+      h1
+        display: inline-block
+        vertical-align: middle
+        margin: 0
+        padding: 0
+        font: bold 2em/1.5 "Chakra Petch", sans-serif
+        color: #4834ff
+    .stages
+      display: flex
+      align-items: center
+      flex-direction: column
+    .download
+      height: 3rem
   .options
-    max-height: 100vh
-    overflow: scroll
+    .cards
+      max-height: 95%
+      overflow-y: auto
   .card
-    font: 1em/1.5 'Iosevka', monospace
     background: white
     border: 2px solid black
     border-radius: 0.5em
@@ -134,7 +163,7 @@ export default {
       margin: 0
       padding: 0
     .row--input
-      min-height: 50px
+      min-height: 32px
       .input-field
         padding-right: 1em
         label
