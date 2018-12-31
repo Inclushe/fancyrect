@@ -23,13 +23,11 @@
       .row.row--input
         .input-field
           label(for="fill") Fill
-          input(type="color" v-model="fill" id="fill" @change="$emit('hey')")
-          input(type="text" v-model="fill" id="fill" @keyup="$emit('hey')")
-      .row.row--input
-        .input-field
+          div.color-toggle(@click="fillDialog = !fillDialog" v-bind:style="{background: this.fill.hex}") {{ fillDialog ? 'Hide' : 'Edit'}}
+          chrome-picker(v-show="fillDialog" v-model="fill" @input="$emit('hey')" disable-alpha=true)
           label(for="stroke") Stroke
-          input(type="color" v-model="stroke" id="stroke" @change="$emit('hey')")
-          input(type="text" v-model="stroke" id="stroke" @keyup="$emit('hey')")
+          div.color-toggle(@click="strokeDialog = !strokeDialog" v-bind:style="{background: this.stroke.hex}") {{ strokeDialog ? 'Hide' : 'Edit'}}
+          chrome-picker(v-show="strokeDialog" v-model="stroke" @input="$emit('hey')" disable-alpha=true)
       .row.row--input
         .input-field
           label(for="strokeWidth") Stroke Width
@@ -37,6 +35,8 @@
 </template>
 
 <script>
+import { Chrome } from 'vue-color'
+
 export default {
   data: function () {
     return {
@@ -44,14 +44,16 @@ export default {
       posY: 2,
       height: 4,
       width: 4,
-      fill: '#ffffff',
-      stroke: '#000000',
+      fill: {hex: '#ffffff'},
+      fillDialog: false,
+      stroke: {hex: '#000000'},
+      strokeDialog: false,
       strokeWidth: 0,
     }
   },
   computed: {
     elCode: function () {
-      return `<rect x="${this.posX}" y="${this.posY}" width="${this.width}" height="${this.height}" fill="${this.fill}" stroke="${this.stroke}" stroke-width="${this.strokeWidth}"/>`
+      return `<rect x="${this.posX}" y="${this.posY}" width="${this.width}" height="${this.height}" fill="${this.fill.hex}" stroke="${this.stroke}" stroke-width="${this.strokeWidth}"/>`
     }
   },
   created: function () {
@@ -59,6 +61,9 @@ export default {
   },
   destroyed: function () {
     this.$emit('hey')
+  },
+  components: {
+    'chrome-picker': Chrome
   }
 }
 </script>

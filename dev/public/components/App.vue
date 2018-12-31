@@ -7,13 +7,15 @@
         h1 Fancy Rect
       .stages
         .svg-stage(v-html="svgCode") {{ svgCode }}
-        .background-stage(v-bind:style="{ background: `url('${svgBackground}')`, height: stageHeight + 'px', width: stageWidth + 'px' }")
+        .background-stage(:style="style")
       .download
-        a(href="#" @click="download()") Download Pattern (SVG)
+        a(:href="`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`" download="pattern.svg") Download Pattern (SVG)
     .options
       .buttons
         button(@click="insert('RectCard')") Create New Rect
         button(@click="insert('EllipseCard')") Create New Ellipse
+        button(@click="insert('LineCard')") Create New Line
+        button(@click="insert('PolygonCard')") Create New Polygon
       .cards
         div
           .card.card--stage
@@ -31,44 +33,53 @@
               .row.row--input
                 .input-field
                   label(for="stageHeight") Stage Height
-                  input(type="number" v-model="stageHeight" id="stageHeight")
+                  input(type="number" v-model="stageHeight" id="stageHeight" @change="updateBackground")
                 .input-field
                   label(for="stageWidth") Stage Width
-                  input(type="number" v-model="stageWidth" id="stageWidth")
+                  input(type="number" v-model="stageWidth" id="stageWidth" @change="updateBackground")
               .row.row--input
                 .input-field
                   label(for="backgroundColor") Background Color
-                  input(type="color" v-model="backgroundColor" id="backgroundColor")
-                  input(type="text" v-model="backgroundColor" id="backgroundColor")
+                  div.color-toggle(@click="backgroundColorDialog = !backgroundColorDialog" v-bind:style="{background: this.backgroundColor.hex}") {{ backgroundColorDialog ? 'Hide' : 'Edit'}}
+                  chrome-picker(v-show="backgroundColorDialog" v-model="backgroundColor" disable-alpha=true)
         div(v-for="(card, index) in cards" :key="card.index")
           component(:is="card.type" @hey="update" @getridofme="getrid(index)")
 </template>
 
 <script>
+import { Chrome } from 'vue-color'
 import RectCard from './RectCard'
 import EllipseCard from './EllipseCard'
+import LineCard from './LineCard'
+import PolygonCard from './PolygonCard'
 
 export default {
   data: function () {
     return {
       height: 16,
       width: 16,
-      backgroundColor: '#4834FF',
+      backgroundColor: {hex: '#4834FF'},
       stageHeight: 256,
       stageWidth: 256,
       cards: [],
       childElements: '',
-      id: 0
+      id: 0,
+      style: {
+        'background': '#4834FF',
+        'height': '256px',
+        'width': '256px'
+      },
+      svgBackground: '',
+      timeout: null,
+      backgroundColorDialog: false
     }
   },
   computed: {
     svgCode: function () {
+      this.updateBackground()
       return `<svg height="${this.height}" width="${this.width}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg">
-      <rect height="100%" width="100%" fill="${this.backgroundColor}"></rect>
+      <rect height="100%" width="100%" fill="${this.backgroundColor.hex}"></rect>
       ${this.childElements}</svg>`
-    },
-    svgBackground: function () {
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`
     }
   },
   methods: {
@@ -83,35 +94,27 @@ export default {
       this.cards
         .splice(index, 1)
         .map((view, index) => view.index = index)
+    },
+    updateBackground: function () {
+      window.clearTimeout(this.timeout)
+      this.timeout = window.setTimeout(() => {
+        let image = new Image()
+        image.addEventListener('load', () => {
+          this.style.height = this.stageHeight + 'px'
+          this.style.width = this.stageWidth + 'px'
+          this.style.background = `url('${image.src}')`
+        })
+        image.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`
+      }, 1000/16)
     }
   },
   components: {
-    RectCard, EllipseCard
+    RectCard,
+    EllipseCard,
+    LineCard,
+    PolygonCard,
+    'chrome-picker': Chrome
   }
-  // mounted() {
-  //   for (let v in this._data) {
-  //     if (localStorage[v]) {
-  //       if (v == 'cards') {
-  //         this.cards = JSON.parse(localStorage.cards)
-  //       } else {
-  //         this[v] = localStorage[v]
-  //       }
-  //     }
-  //   }
-  //   if (localStorage['$children']) {
-  //     this.$children = JSON.parse(localStorage['$children'])
-  //   }
-  // },
-  // watch: {
-  //   height: function (newVal) {localStorage.height = newVal},
-  //   width: function (newVal) {localStorage.width = newVal},
-  //   backgroundColor: function (newVal) {localStorage.backgroundColor = newVal},
-  //   stageHeight: function (newVal) {localStorage.stageHeight = newVal},
-  //   stageWidth: function (newVal) {localStorage.stageWidth = newVal},
-  //   cards: function (newVal) {localStorage.cards = JSON.stringify(newVal); localStorage.$children = JSON.stringify(this.$children)},
-  //   childElements: function (newVal) {localStorage.childElements = newVal},
-  //   id: function (newVal) {localStorage.id = newVal},
-  // }
 }
 </script>
 
@@ -149,6 +152,8 @@ export default {
     .cards
       max-height: 95%
       overflow-y: auto
+  input.vc-input__input, .vc-input__label
+    font-family: 'Iosevka', monospace !important
   .card
     background: white
     border: 2px solid black
@@ -166,6 +171,17 @@ export default {
       min-height: 32px
       .input-field
         padding-right: 1em
+        .color-toggle
+          display: inline-block
+          padding: 0em 1em
+          border: 1px solid black
+          border-radius: 0.5em
+          font-size: 1.5em
+          font-weight: bold
+          text-stroke: 1px black
+          -webkit-text-stroke: 1px black
+          cursor: pointer
+          color: white
         label
           vertical-align: middle
         input

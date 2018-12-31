@@ -6,12 +6,15 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
 @TODO:
 
 - [X] Fix Layout Issues
-- [ ] Add Auto-Save Feature
-- [ ] Decide to Add New Shapes
-  - [ ] Line
-  - [ ] Polygon
-- [ ] Fix Updating Background
-  - Debouncing?
-- [ ] Improve CSS
-- [ ] Add Download Links
+- [X] Decide to Add New Shapes
+  - [X] Line
+  - [X] Polygon
+- [X] Fix Updating Background
 - [X] Add Logo
+- [X] Add Download Links
+- [ ] Improve CSS
+- [ ] Add Auto-Save Feature
+- [ ] Replace Background Stage with SVG Pattern?
+- [ ] Allow download of background stage?
+- [ ] Allow Layer to move up?
+- [ ] Allow transparency?

@@ -1,25 +1,18 @@
 <template lang="pug">
-  .card.card--ellipse
+  .card.card--rect
     .container
       .row.row--title
         div
-          div.icon--rect
-          h1 Ellipse
+          div.icon--polygon
+          h1 Polygon
+        button(@click="addPoint") Add Point
         button(@click="$emit('getridofme')") Delete
-      .row.row--input
-        .input-field
-          label(for="posX") Center X
-          input(type="number" v-model="posX" id="posX" @change="$emit('hey')")
-        .input-field
-          label(for="posY") Center Y
-          input(type="number" v-model="posY" id="posY" @change="$emit('hey')")
-      .row.row--input
-        .input-field
-          label(for="height") Radius X
-          input(type="number" v-model="height" id="height" @change="$emit('hey')")
-        .input-field
-          label(for="width") Radius Y
-          input(type="number" v-model="width" id="width" @change="$emit('hey')")
+      .row.row--input(v-for="(point, index) in points" :key="index")
+        label(for="point[0]") X
+        input(type="number" v-model="point[0]" id="point[0]" @change="$emit('hey')")
+        label(for="point[1]") Y
+        input(type="number" v-model="point[1]" id="point[1]" @change="$emit('hey')")
+        button(@click="removePoint(index)") Remove
       .row.row--input
         .input-field
           label(for="fill") Fill
@@ -32,6 +25,11 @@
         .input-field
           label(for="strokeWidth") Stroke Width
           input(type="number" v-model="strokeWidth" id="strokeWidth" @change="$emit('hey')")
+          label(for="strokeLineCap") Line Cap
+          select(v-model="strokeLineCap" id="strokeLineCap" @change="$emit('hey')")
+            option round
+            option square
+            option butt
 </template>
 
 <script>
@@ -40,20 +38,28 @@ import { Chrome } from 'vue-color'
 export default {
   data: function () {
     return {
-      posX: 2,
-      posY: 2,
-      height: 4,
-      width: 4,
+      points: [[2, 2], [2, 14], [14, 14]],
       fill: {hex: '#ffffff'},
       fillDialog: false,
       stroke: {hex: '#000000'},
       strokeDialog: false,
-      strokeWidth: 0,
+      strokeWidth: 2,
+      strokeLineCap: 'round'
     }
   },
   computed: {
     elCode: function () {
-      return `<ellipse cx="${this.posX}" cy="${this.posY}" ry="${this.width}" rx="${this.height}" fill="${this.fill.hex}" stroke="${this.stroke.hex}" stroke-width="${this.strokeWidth}"/>`
+      return `<polygon points="${this.points.reduce((str, value) => {return str + value[0] + ',' + value[1] + ' '}, '')}" fill="${this.fill.hex}" stroke="${this.stroke.hex}" stroke-width="${this.strokeWidth}" stroke-linecap="${this.strokeLineCap}"/>`
+    }
+  },
+  methods: {
+    addPoint: function () {
+      this.points.push([14, 2])
+      this.$emit('hey')
+    },
+    removePoint: function (index) {
+      this.points.splice(index, 1)
+      this.$emit('hey')
     }
   },
   created: function () {
