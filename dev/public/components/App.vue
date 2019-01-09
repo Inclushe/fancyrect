@@ -77,7 +77,7 @@ export default {
   computed: {
     svgCode: function () {
       this.updateBackground()
-      return `<svg height="${this.height}" width="${this.width}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg">
+      return `<svg height="${this.height}" width="${this.width}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${this.width} ${this.height}" id="svg">
       <rect height="100%" width="100%" fill="${this.backgroundColor.hex}"></rect>
       ${this.childElements}</svg>`
     }

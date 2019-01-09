@@ -14,7 +14,6 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
 - [X] Add Download Links
 - [ ] Improve CSS
 - [ ] Add Auto-Save Feature
-- [ ] Replace Background Stage with SVG Pattern?
 - [ ] Allow download of background stage?
 - [ ] Allow Layer to move up?
 - [ ] Allow transparency?
