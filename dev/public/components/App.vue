@@ -25,18 +25,14 @@
                 h1 Stage
               .row.row--input
                 .input-field
-                  label(for="height") Height
-                  input(type="number" v-model="height" id="height")
+                  draggable-input(id="height" v-model="height" label="Height")
                 .input-field
-                  label(for="width") Width
-                  input(type="number" v-model="width" id="width")
+                  draggable-input(id="width" v-model="width" label="Weight")
               .row.row--input
                 .input-field
-                  label(for="stageHeight") Stage Height
-                  input(type="number" v-model="stageHeight" id="stageHeight" @change="updateBackground")
+                  draggable-input(id="stageHeight" v-model="stageHeight" label="Stage Height")
                 .input-field
-                  label(for="stageWidth") Stage Width
-                  input(type="number" v-model="stageWidth" id="stageWidth" @change="updateBackground")
+                  draggable-input(id="stageWidth" v-model="stageWidth" label="Stage Width")
               .row.row--input
                 .input-field
                   label(for="backgroundColor") Background Color
@@ -52,12 +48,13 @@ import RectCard from './RectCard'
 import EllipseCard from './EllipseCard'
 import LineCard from './LineCard'
 import PolygonCard from './PolygonCard'
+import DraggableInput from './DraggableInput'
 
 export default {
   data: function () {
     return {
-      height: 16,
-      width: 16,
+      height: 32,
+      width: 32,
       backgroundColor: {hex: '#4834FF'},
       stageHeight: 256,
       stageWidth: 256,
@@ -108,12 +105,21 @@ export default {
       }, 1000/16)
     }
   },
+  watch: {
+    stageHeight: function () {
+      this.updateBackground()
+    },
+    stageWidth: function () {
+      this.updateBackground()
+    }
+  },
   components: {
     RectCard,
     EllipseCard,
     LineCard,
     PolygonCard,
-    'chrome-picker': Chrome
+    'chrome-picker': Chrome,
+    DraggableInput
   }
 }
 </script>
@@ -187,6 +193,6 @@ export default {
         input
           font: inherit
           max-height: 2em
-          max-width: 5em
+          max-width: 4rem
 </style>
 

@@ -12,8 +12,7 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
 - [X] Fix Updating Background
 - [X] Add Logo
 - [X] Add Download Links
-- [ ] Improve CSS
+- [X] Add Draggable Input
 - [ ] Add Auto-Save Feature
-- [ ] Allow download of background stage?
-- [ ] Allow Layer to move up?
-- [ ] Allow transparency?
+- [ ] Reorder Feature
+- [ ] Improve CSS

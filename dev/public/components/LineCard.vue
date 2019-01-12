@@ -8,10 +8,8 @@
         button(@click="addPoint") Add Point
         button(@click="$emit('getridofme')") Delete
       .row.row--input(v-for="(point, index) in points" :key="index")
-        label(for="point[0]") X
-        input(type="number" v-model="point[0]" id="point[0]" @change="$emit('hey')")
-        label(for="point[1]") Y
-        input(type="number" v-model="point[1]" id="point[1]" @change="$emit('hey')")
+        draggable-input(id="point[0]" v-model="point[0]" label="X")
+        draggable-input(id="point[1]" v-model="point[1]" label="Y")
         button(@click="removePoint(index)") Remove
       .row.row--input
         .input-field
@@ -23,8 +21,7 @@
           chrome-picker(v-show="strokeDialog" v-model="stroke" @input="$emit('hey')" disable-alpha=true)
       .row.row--input
         .input-field
-          label(for="strokeWidth") Stroke Width
-          input(type="number" v-model="strokeWidth" id="strokeWidth" @change="$emit('hey')")
+          draggable-input(id="strokeWidth" v-model="strokeWidth" label="Stroke Width")
           label(for="strokeLineCap") Line Cap
           select(v-model="strokeLineCap" id="strokeLineCap" @change="$emit('hey')")
             option round
@@ -34,6 +31,7 @@
 
 <script>
 import { Chrome } from 'vue-color'
+import DraggableInput from './DraggableInput'
 
 export default {
   data: function () {
@@ -68,8 +66,17 @@ export default {
   destroyed: function () {
     this.$emit('hey')
   },
+  watch: {
+    points: function () {
+      this.$emit('hey')
+    },
+    strokeWidth: function () {
+      this.$emit('hey')
+    }
+  },
   components: {
-    'chrome-picker': Chrome
+    'chrome-picker': Chrome,
+    DraggableInput
   }
 }
 </script>

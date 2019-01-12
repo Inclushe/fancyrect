@@ -8,18 +8,14 @@
         button(@click="$emit('getridofme')") Delete
       .row.row--input
         .input-field
-          label(for="posX") Center X
-          input(type="number" v-model="posX" id="posX" @change="$emit('hey')")
+          draggable-input(id="posX" v-model="posX" label="Center X") 
         .input-field
-          label(for="posY") Center Y
-          input(type="number" v-model="posY" id="posY" @change="$emit('hey')")
+          draggable-input(id="posY" v-model="posY" label="Center Y") 
       .row.row--input
         .input-field
-          label(for="height") Radius X
-          input(type="number" v-model="height" id="height" @change="$emit('hey')")
+          draggable-input(id="height" v-model="height" label="Radius X") 
         .input-field
-          label(for="width") Radius Y
-          input(type="number" v-model="width" id="width" @change="$emit('hey')")
+          draggable-input(id="width" v-model="width" label="Radius Y") 
       .row.row--input
         .input-field
           label(for="fill") Fill
@@ -30,12 +26,12 @@
           chrome-picker(v-show="strokeDialog" v-model="stroke" @input="$emit('hey')" disable-alpha=true)
       .row.row--input
         .input-field
-          label(for="strokeWidth") Stroke Width
-          input(type="number" v-model="strokeWidth" id="strokeWidth" @change="$emit('hey')")
+          draggable-input(id="strokeWidth" v-model="strokeWidth" label="Stroke Width") 
 </template>
 
 <script>
 import { Chrome } from 'vue-color'
+import DraggableInput from './DraggableInput'
 
 export default {
   data: function () {
@@ -62,8 +58,26 @@ export default {
   destroyed: function () {
     this.$emit('hey')
   },
+  watch: {
+    posX: function () {
+      this.$emit('hey')
+    },
+    posY: function () {
+      this.$emit('hey')
+    },
+    height: function () {
+      this.$emit('hey')
+    },
+    width: function () {
+      this.$emit('hey')
+    },
+    strokeWidth: function () {
+      this.$emit('hey')
+    }
+  },
   components: {
-    'chrome-picker': Chrome
+    'chrome-picker': Chrome,
+    DraggableInput
   }
 }
 </script>
