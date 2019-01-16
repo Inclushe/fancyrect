@@ -1,7 +1,7 @@
 <template lang="pug">
   .draggable-input
     label(:for="id" @mousedown="drag") {{ label }}
-    input(type="number" v-model="v" :id="id" @change="$emit('hey')")
+    input(type="number" v-model="v" :id="id" @change="$emit('hey')" @mousedown="drag")
 </template>
 
 <script>
