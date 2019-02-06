@@ -56,7 +56,7 @@
                 .input-field
                   draggable-input(id="height" v-model="height" label="Height")
                 .input-field
-                  draggable-input(id="width" v-model="width" label="Weight")
+                  draggable-input(id="width" v-model="width" label="Width")
               .row.row--input
                 .input-field
                   draggable-input(id="stageHeight" v-model="stageHeight" label="Stage Height")
