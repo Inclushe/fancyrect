@@ -5,6 +5,8 @@
         div
           div.icon--rect
           h1 Rect
+        button(@click="$emit('moveup')") Up
+        button(@click="$emit('movedown')") Down
         button(@click="$emit('getridofme')") Delete
       .row.row--input
         .input-field

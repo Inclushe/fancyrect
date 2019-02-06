@@ -6,6 +6,8 @@
           div.icon--line
           h1 Line
         button(@click="addPoint") Add Point
+        button(@click="$emit('moveup')") Up
+        button(@click="$emit('movedown')") Down
         button(@click="$emit('getridofme')") Delete
       .row.row--input(v-for="(point, index) in points" :key="index")
         draggable-input(id="point[0]" v-model="point[0]" label="X")

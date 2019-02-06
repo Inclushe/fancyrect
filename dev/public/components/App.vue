@@ -9,20 +9,49 @@
         .svg-stage(v-html="svgCode") {{ svgCode }}
         .background-stage(:style="style")
       .download
-        a(:href="`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`" download="pattern.svg") Download Pattern (SVG)
+        div
+          <img src="../images/Download Icon.svg"/>
+          a(:href="`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`" download="pattern.svg") Download Pattern
+        div
+          img(src="../images/Inclushe Logo.svg")
+          span Made by <a href="https://inclushe.com">Inclushe</a>
+        div <a href="https://github.com/xiaokaike/vue-color">vue-color</a> made by xiaokaike
     .options
       .buttons
-        button(@click="insert('RectCard')") Create New Rect
-        button(@click="insert('EllipseCard')") Create New Ellipse
-        button(@click="insert('LineCard')") Create New Line
-        button(@click="insert('PolygonCard')") Create New Polygon
+        a(@click="insert('RectCard')")
+          .add-button 
+            div.icon-div
+              img(src="../images/Rect.svg").shape-icon
+              img(src="../images/Add Icon.svg").add-icon
+            span.add-text ADD RECT
+        a(@click="insert('EllipseCard')")
+          .add-button 
+            div.icon-div
+              img(src="../images/Ellipse.svg").shape-icon
+              img(src="../images/Add Icon.svg").add-icon
+            span.add-text ADD ELLIPSE
+        a(@click="insert('LineCard')")
+          .add-button 
+            div.icon-div
+              img(src="../images/Line.svg").shape-icon
+              img(src="../images/Add Icon.svg").add-icon
+            span.add-text ADD LINE
+        a(@click="insert('PolygonCard')")
+          .add-button
+            div.icon-div
+              img(src="../images/Polygon.svg").shape-icon
+              img(src="../images/Add Icon.svg").add-icon
+            span.add-text ADD POLYGON
       .cards
         div
           .card.card--stage
+            header.card--header
+              h2 STAGE
+              .buttons
+                img(src="../images/Up Arrow.svg")
+                img(src="../images/Down Arrow.svg")
+                img(src="../images/Delete Card.svg")
             .container
-              .row
-                div.icon--stage
-                h1 Stage
               .row.row--input
                 .input-field
                   draggable-input(id="height" v-model="height" label="Height")
@@ -38,8 +67,8 @@
                   label(for="backgroundColor") Background Color
                   div.color-toggle(@click="backgroundColorDialog = !backgroundColorDialog" v-bind:style="{background: this.backgroundColor.hex}") {{ backgroundColorDialog ? 'Hide' : 'Edit'}}
                   chrome-picker(v-show="backgroundColorDialog" v-model="backgroundColor" disable-alpha=true)
-        div(v-for="(card, index) in cards" :key="card.index")
-          component(:is="card.type" @hey="update" @getridofme="getrid(index)")
+        div(v-for="(card, index, ident) in cards" :key="card.index")
+          component(:is="card.type" :ident="card.ident" @hey="update" @getridofme="getrid(index)" @moveup="moveup(index)" @movedown="movedown(index)")
 </template>
 
 <script>
@@ -81,10 +110,12 @@ export default {
   },
   methods: {
     insert: function (element) {
-      this.cards.push({index: this.id++, type: element})
+      this.cards.push({index: this.id++, type: element, ident: Math.random()})
     },
     update: function () {
-      this.childElements = this.$children.reduce((str, child) => {return str + child.elCode}, '')
+      this.childElements = this.$children.reduce((str, child) => {
+        return (child.elCode !== undefined ? str + child.elCode : str)
+      }, '')
     },
     getrid: function (index) {
       // console.log(index)
@@ -103,6 +134,33 @@ export default {
         })
         image.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`
       }, 1000/16)
+    },
+    moveup: function (index) {
+      console.log("moveup: ", index)
+      if ((index) - 1 >= 0) {
+        // Change index first or give up
+        console.log('uh', this.cards[index].index)
+        let movingCard = this.cards[index]
+        this.cards[index] = this.cards[index - 1]
+        this.cards[index - 1] = movingCard
+
+        let tempIndex = this.cards[index].index
+        this.cards[index].index = this.cards[index - 1].index
+        this.cards[index - 1].index = tempIndex
+      }
+    },
+    movedown: function (index) {
+      console.log("movedown: ", index)
+      if ((index) + 1 < this.cards.length) {
+        console.log('uh', this.cards[index].index)
+        let movingCard = this.cards[index]
+        this.cards[index] = this.cards[index + 1]
+        this.cards[index + 1] = movingCard
+
+        let tempIndex = this.cards[index].index
+        this.cards[index].index = this.cards[index + 1].index
+        this.cards[index + 1].index = tempIndex
+      }
     }
   },
   watch: {
@@ -128,6 +186,8 @@ export default {
   main.container
     height: 100%
     width: 100%
+    max-width: 64em
+    margin: 0 auto
     padding-top: 2em
     display: flex
     justify-content: space-around
@@ -140,21 +200,57 @@ export default {
       height: 3rem
       img
         vertical-align: middle
-        margin-right: 0.5em
+        margin-right: 1.5em
       h1
         display: inline-block
         vertical-align: middle
         margin: 0
         padding: 0
-        font: bold 2em/1.5 "Chakra Petch", sans-serif
+        font: 300 3em/1.5 "Roboto Condensed", sans-serif
         color: #4834ff
     .stages
       display: flex
       align-items: center
       flex-direction: column
     .download
-      height: 3rem
+      height: 10rem
+      color: #7D7A99
+      text-align: center
+      div
+        padding-bottom: 0.5em
+      img
+        vertical-align: middle
+        margin-right: 0.5em
   .options
+    .buttons
+      display: flex
+      justify-content: space-between
+      div.add-button
+        height: 2em
+        width: 5em
+        padding: 0.5em
+        background: linear-gradient(180deg, #130E40 0%, #1E1766 100%)
+        border-radius: 0.25em
+        cursor: pointer
+        .icon-div
+          display: flex
+          justify-content: space-between
+        img
+          display: block
+          margin: 0
+          padding: 0
+        span.add-text
+          margin-top: 0.5rem
+          display: block
+          font-weight: bold
+          line-height: 11px
+          font-size: 12px
+          letter-spacing: 0.05em
+          color: white
+        &:hover
+          background: lighten(#1E1766, 25%)
+        &:active
+          background: lighten(#1E1766, 75%)
     .cards
       max-height: 95%
       overflow-y: auto
@@ -162,17 +258,29 @@ export default {
     font-family: 'Iosevka', monospace !important
   .card
     background: white
-    border: 2px solid black
-    border-radius: 0.5em
-    margin: 0.5em
-    padding: 0.5em 1em
-    .row--title
+    width: 27em
+    border-radius: 0.25em
+    margin-top: 1em
+    header.card--header
+      background: #1E1766
+      height: 2em
+      padding: 0 1em
+      border-radius: 0.25em 0.25em 0 0
       display: flex
       justify-content: space-between
-    h1
-      text-align: left
-      margin: 0
-      padding: 0
+      h2
+        margin: 0
+        padding: 0
+        font-size: 1em
+        font-weight: bold
+        letter-spacing: 0.05em
+        line-height: 2em
+        color: white
+        text-align: left
+      .buttons
+        img
+          margin-left: 0.5em
+          cursor: pointer
     .row--input
       min-height: 32px
       .input-field
