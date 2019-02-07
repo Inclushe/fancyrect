@@ -262,7 +262,7 @@ export default {
       padding: 0 1em
       overflow-y: auto
   input.vc-input__input, .vc-input__label
-    font-family: 'Iosevka', monospace !important
+    font-family: 'Iosevka Web', monospace !important
   .card
     background: white
     width: 27em
@@ -361,7 +361,7 @@ export default {
             width: 6em
           input, select
             box-sizing: border-box
-            font: 1em 'Iosevka', monospace
+            font: 1em 'Iosevka Web', monospace
             height: 2em
             width: 5em
             padding-left: 0.5em
