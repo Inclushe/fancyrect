@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "parcel dev/index.pug",
-    "build": "parcel build dev/index.pug -d dist/ --public-url https://fancyrect.inclushe.com && cp dev/{CNAME,public/images/fancy-rect.png} dist/."
+    "build": "parcel build dev/index.pug -d dist/ --public-url https://fancyrect.inclushe.com && cp dev/CNAME dev/public/images/fancy-rect.png dist/."
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
