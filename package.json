@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "parcel dev/index.pug",
-    "build": "parcel build dev/index.pug -d public/ && cp dev/CNAME public/CNAME"
+    "build": "parcel build dev/index.pug -d dist/ && cp dev/CNAME dist/CNAME"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
