@@ -333,6 +333,8 @@ export default {
       display: flex
       justify-content: flex-start
       flex-direction: row
+      .delete-line
+        cursor: pointer
       .input-field
         .draggable-input
           display: flex

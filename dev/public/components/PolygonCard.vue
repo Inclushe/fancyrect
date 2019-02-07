@@ -13,12 +13,12 @@
           .button
             span.add-text ADD POINT
             img(src="../images/Add Icon.svg").add-icon
-      .row.row--input(v-for="(point, index) in points" :key="point")
+      .row.row--input(v-for="(point, index) in points" :key="point[2]")
         .input-field
           draggable-input(id="point[0]" v-model="point[0]" label="POS X")
         .input-field
           draggable-input(id="point[1]" v-model="point[1]" label="POS Y")
-        img(src="../images/Delete Black.svg" @click="removePoint(index)")
+        img(src="../images/Delete Black.svg" @click="removePoint(index)").delete-line
       .row.row--input
         .input-field
           .draggable-input
@@ -45,13 +45,14 @@ import DraggableInput from './DraggableInput'
 export default {
   data: function () {
     return {
-      points: [[2, 2], [2, 14], [14, 14]],
+      points: [[2, 2, 0], [2, 14, 1], [14, 14, 2]],
       fill: {hex: '#ffffff'},
       fillDialog: false,
       stroke: {hex: '#000000'},
       strokeDialog: false,
       strokeWidth: 2,
-      strokeLineCap: 'round'
+      strokeLineCap: 'round',
+      key: 3
     }
   },
   computed: {
@@ -61,7 +62,7 @@ export default {
   },
   methods: {
     addPoint: function () {
-      this.points.push([14, 2])
+      this.points.push([14, 2, this.key++])
       this.$emit('hey')
     },
     removePoint: function (index) {
