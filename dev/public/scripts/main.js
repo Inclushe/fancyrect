@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import c from '../CNAME'
 import App from '../components/App'
 
 if (module.hot) {
