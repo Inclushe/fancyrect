@@ -1,6 +1,19 @@
 {
+  "name": "fancyrect",
+  "version": "0.2.0",
+  "description": "Create simple SVG patterns without pulling out your design program of choice.",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:Inclushe/fancyrect.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "watch": "parcel dev/index.pug",
+    "build": "parcel build dev/index.pug -d build/ --public-url https://inclushe.com/fancyrect"
+  },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
+    "cssnano": "^4.1.8",
     "pug": "^2.0.3",
     "stylus": "^0.54.5",
     "vue-template-compiler": "^2.5.21"
