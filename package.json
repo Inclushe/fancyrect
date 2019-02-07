@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "parcel dev/index.pug",
-    "build": "parcel build dev/index.pug -d public/"
+    "build": "parcel build dev/index.pug -d public/ && echo -n 'fancyrect.inclushe.com' > public/CNANE"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
