@@ -46,29 +46,31 @@
         div
           .card.card--stage
             header.card--header
-              h2 STAGE
+              .head
+                h2 STAGE
               .buttons
-                img(src="../images/Up Arrow.svg")
-                img(src="../images/Down Arrow.svg")
-                img(src="../images/Delete Card.svg")
             .container
               .row.row--input
                 .input-field
-                  draggable-input(id="height" v-model="height" label="Height")
+                  draggable-input(id="height" v-model="height" label="HEIGHT")
                 .input-field
-                  draggable-input(id="width" v-model="width" label="Width")
+                  draggable-input(id="width" v-model="width" label="WIDTH")
               .row.row--input
                 .input-field
-                  draggable-input(id="stageHeight" v-model="stageHeight" label="Stage Height")
+                  draggable-input(id="stageHeight" v-model="stageHeight" label="STAGE HEIGHT")
                 .input-field
-                  draggable-input(id="stageWidth" v-model="stageWidth" label="Stage Width")
+                  draggable-input(id="stageWidth" v-model="stageWidth" label="STAGE WIDTH")
               .row.row--input
                 .input-field
-                  label(for="backgroundColor") Background Color
-                  div.color-toggle(@click="backgroundColorDialog = !backgroundColorDialog" v-bind:style="{background: this.backgroundColor.hex}") {{ backgroundColorDialog ? 'Hide' : 'Edit'}}
+                  .draggable-input
+                    label(for="backgroundColor").long-label BACKGROUND
+                    .color-toggle(@click="backgroundColorDialog = !backgroundColorDialog" v-bind:style="{background: this.backgroundColor.hex}")
+                    span.faded Click to change colors.
                   chrome-picker(v-show="backgroundColorDialog" v-model="backgroundColor" disable-alpha=true)
-        div(v-for="(card, index, ident) in cards" :key="card.index")
-          component(:is="card.type" :ident="card.ident" @hey="update" @getridofme="getrid(index)" @moveup="moveup(index)" @movedown="movedown(index)")
+              .row--input
+                p.faded Drag on inputs to change their values.
+        div(v-for="(card, index) in cards" :key="card.index")
+          component(:is="card.type" @hey="update" @getridofme="getrid(index)")
 </template>
 
 <script>
@@ -110,7 +112,7 @@ export default {
   },
   methods: {
     insert: function (element) {
-      this.cards.push({index: this.id++, type: element, ident: Math.random()})
+      this.cards.push({index: this.id++, type: element})
     },
     update: function () {
       this.childElements = this.$children.reduce((str, child) => {
@@ -134,34 +136,34 @@ export default {
         })
         image.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(this.svgCode)}`
       }, 1000/16)
-    },
-    moveup: function (index) {
-      console.log("moveup: ", index)
-      if ((index) - 1 >= 0) {
-        // Change index first or give up
-        console.log('uh', this.cards[index].index)
-        let movingCard = this.cards[index]
-        this.cards[index] = this.cards[index - 1]
-        this.cards[index - 1] = movingCard
-
-        let tempIndex = this.cards[index].index
-        this.cards[index].index = this.cards[index - 1].index
-        this.cards[index - 1].index = tempIndex
-      }
-    },
-    movedown: function (index) {
-      console.log("movedown: ", index)
-      if ((index) + 1 < this.cards.length) {
-        console.log('uh', this.cards[index].index)
-        let movingCard = this.cards[index]
-        this.cards[index] = this.cards[index + 1]
-        this.cards[index + 1] = movingCard
-
-        let tempIndex = this.cards[index].index
-        this.cards[index].index = this.cards[index + 1].index
-        this.cards[index + 1].index = tempIndex
-      }
     }
+    // moveup: function (index) {
+    //   console.log("moveup: ", index)
+    //   if ((index) - 1 >= 0) {
+    //     // Change index first or give up
+    //     console.log('uh', this.cards[index].index)
+    //     let movingCard = this.cards[index]
+    //     this.cards[index] = this.cards[index - 1]
+    //     this.cards[index - 1] = movingCard
+
+    //     let tempIndex = this.cards[index].index
+    //     this.cards[index].index = this.cards[index - 1].index
+    //     this.cards[index - 1].index = tempIndex
+    //   }
+    // },
+    // movedown: function (index) {
+    //   console.log("movedown: ", index)
+    //   if ((index) + 1 < this.cards.length) {
+    //     console.log('uh', this.cards[index].index)
+    //     let movingCard = this.cards[index]
+    //     this.cards[index] = this.cards[index + 1]
+    //     this.cards[index + 1] = movingCard
+
+    //     let tempIndex = this.cards[index].index
+    //     this.cards[index].index = this.cards[index + 1].index
+    //     this.cards[index + 1].index = tempIndex
+    //   }
+    // }
   },
   watch: {
     stageHeight: function () {
@@ -191,6 +193,10 @@ export default {
     padding-top: 2em
     display: flex
     justify-content: space-around
+  .faded
+    margin: 0
+    padding: 0
+    color: #7D7A99
   .content
     display: flex
     justify-content: space-between
@@ -253,6 +259,7 @@ export default {
           background: lighten(#1E1766, 75%)
     .cards
       max-height: 95%
+      padding: 0 1em
       overflow-y: auto
   input.vc-input__input, .vc-input__label
     font-family: 'Iosevka', monospace !important
@@ -268,39 +275,96 @@ export default {
       border-radius: 0.25em 0.25em 0 0
       display: flex
       justify-content: space-between
-      h2
+      .head
+        display: inherit
+        h2
+          margin: 0
+          padding: 0
+          font-size: 1em
+          font-weight: bold
+          letter-spacing: 0.05em
+          line-height: 2em
+          color: white
+          text-align: left
+        img
+          margin-right: 0.5em
+      .buttons
+        img
+          margin-left: 0.5em
+          cursor: pointer
+    .container
+      padding: 0 1em 1em
+    .row--points
+      margin-top: 1em
+      display: flex
+      justify-content: space-between
+      flex-direction: row
+      h3
         margin: 0
         padding: 0
         font-size: 1em
         font-weight: bold
         letter-spacing: 0.05em
         line-height: 2em
-        color: white
+        color: black
         text-align: left
-      .buttons
+      .button
+        display: flex
+        justify-content: space-between
+        height: 2em
+        background: linear-gradient(180deg, #130E40 0%, #1E1766 100%)
+        border-radius: 4px
+        cursor: pointer
+        padding: 0 1em
         img
-          margin-left: 0.5em
-          cursor: pointer
-    .row--input
-      min-height: 32px
-      .input-field
-        padding-right: 1em
-        .color-toggle
-          display: inline-block
-          padding: 0em 1em
-          border: 1px solid black
-          border-radius: 0.5em
-          font-size: 1.5em
+          display: block
+          margin: 0
+          padding: 0
+        span.add-text
+          display: block
           font-weight: bold
-          text-stroke: 1px black
-          -webkit-text-stroke: 1px black
-          cursor: pointer
+          line-height: 2rem
+          font-size: 12px
+          margin-right: 1em
+          letter-spacing: 0.05em
           color: white
-        label
-          vertical-align: middle
-        input
-          font: inherit
-          max-height: 2em
-          max-width: 4rem
+    .row--input
+      margin-top: 1em
+      display: flex
+      justify-content: flex-start
+      flex-direction: row
+      .input-field
+        .draggable-input
+          display: flex
+          justify-content: flex-start
+          flex-direction: row
+          align-items: center
+          margin-right: 2em
+          .color-toggle
+            display: inline-block
+            height: 2em
+            width: 2em
+            border: 4px solid #130E40
+            cursor: pointer
+            box-sizing: border-box
+            margin-right: 1.5em
+            border-radius: 0.25em
+          label
+            // vertical-align: middle
+            // height: 2em
+            width: 4em
+            line-height: 0.875em
+            margin-right: 0.5em
+          label.long-label
+            width: 6em
+          input, select
+            box-sizing: border-box
+            font: 1em 'Iosevka', monospace
+            height: 2em
+            width: 5em
+            padding-left: 0.5em
+            border: 2px solid #1E1766
+            border-radius: 0.25em
+            background: #e
 </style>
 

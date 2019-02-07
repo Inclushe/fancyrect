@@ -1,34 +1,41 @@
 <template lang="pug">
-  .card.card--rect
+  .card.card--polygon
+    header.card--header
+      .head
+        img(src="../images/Polygon.svg")
+        h2 POLYGON
+      .buttons
+        img(src="../images/Delete Card.svg" @click="$emit('getridofme')")
     .container
-      .row.row--title
-        div
-          div.icon--polygon
-          h1 Polygon
-        button(@click="addPoint") Add Point
-        button(@click="$emit('moveup')") Up
-        button(@click="$emit('movedown')") Down
-        button(@click="$emit('getridofme')") Delete
-      .row.row--input(v-for="(point, index) in points" :key="index")
-        draggable-input(id="point[0]" v-model="point[0]" label="X")
-        draggable-input(id="point[1]" v-model="point[1]" label="Y")
-        button(@click="removePoint(index)") Remove
+      .row.row--points
+        h3 POINTS
+        a(@click="addPoint")
+          .button
+            span.add-text ADD POINT
+            img(src="../images/Add Icon.svg").add-icon
+      .row.row--input(v-for="(point, index) in points" :key="point")
+        .input-field
+          draggable-input(id="point[0]" v-model="point[0]" label="POS X")
+        .input-field
+          draggable-input(id="point[1]" v-model="point[1]" label="POS Y")
+        img(src="../images/Delete Black.svg" @click="removePoint(index)")
       .row.row--input
         .input-field
-          label(for="fill") Fill
-          div.color-toggle(@click="fillDialog = !fillDialog" v-bind:style="{background: this.fill.hex}") {{ fillDialog ? 'Hide' : 'Edit'}}
+          .draggable-input
+            label(for="fill") FILL AND STROKE
+            div.color-toggle(@click="fillDialog = !fillDialog; strokeDialog = false" v-bind:style="{background: this.fill.hex}")
+            div.color-toggle(@click="strokeDialog = !strokeDialog; fillDialog = false" v-bind:style="{background: this.stroke.hex}")
+            draggable-input(id="strokeWidth" v-model="strokeWidth" label="STROKE WIDTH")
           chrome-picker(v-show="fillDialog" v-model="fill" @input="$emit('hey')" disable-alpha=true)
-          label(for="stroke") Stroke
-          div.color-toggle(@click="strokeDialog = !strokeDialog" v-bind:style="{background: this.stroke.hex}") {{ strokeDialog ? 'Hide' : 'Edit'}}
           chrome-picker(v-show="strokeDialog" v-model="stroke" @input="$emit('hey')" disable-alpha=true)
       .row.row--input
         .input-field
-          draggable-input(id="strokeWidth" v-model="strokeWidth" label="Stroke Width")
-          label(for="strokeLineCap") Line Cap
-          select(v-model="strokeLineCap" id="strokeLineCap" @change="$emit('hey')")
-            option round
-            option square
-            option butt
+          .draggable-input
+            label(for="strokeLineCap") STROKE CAP
+            select(v-model="strokeLineCap" id="strokeLineCap" @change="$emit('hey')")
+              option round
+              option square
+              option butt
 </template>
 
 <script>
@@ -58,7 +65,7 @@ export default {
       this.$emit('hey')
     },
     removePoint: function (index) {
-      this.points.splice(index, 1)
+      this.$delete(this.points, index)
       this.$emit('hey')
     }
   },

@@ -1,34 +1,31 @@
 <template lang="pug">
   .card.card--rect
+    header.card--header
+      .head
+        img(src="../images/Rect.svg")
+        h2 RECT
+      .buttons
+        img(src="../images/Delete Card.svg" @click="$emit('getridofme')")
     .container
-      .row.row--title
-        div
-          div.icon--rect
-          h1 Rect
-        button(@click="$emit('moveup')") Up
-        button(@click="$emit('movedown')") Down
-        button(@click="$emit('getridofme')") Delete
       .row.row--input
         .input-field
-          draggable-input(id="posX" v-model="posX" label="X")
+          draggable-input(id="posX" v-model="posX" label="POS X")
         .input-field
-          draggable-input(id="posY" v-model="posY" label="Y")
+          draggable-input(id="posY" v-model="posY" label="POS Y")
       .row.row--input
         .input-field
-          draggable-input(id="height" v-model="height" label="Height")
+          draggable-input(id="height" v-model="height" label="HEIGHT")
         .input-field
-          draggable-input(id="width" v-model="width" label="Width")
+          draggable-input(id="width" v-model="width" label="WIDTH")
       .row.row--input
         .input-field
-          label(for="fill") Fill
-          div.color-toggle(@click="fillDialog = !fillDialog" v-bind:style="{background: this.fill.hex}") {{ fillDialog ? 'Hide' : 'Edit'}}
+          .draggable-input
+            label(for="fill") FILL AND STROKE
+            div.color-toggle(@click="fillDialog = !fillDialog; strokeDialog = false" v-bind:style="{background: this.fill.hex}")
+            div.color-toggle(@click="strokeDialog = !strokeDialog; fillDialog = false" v-bind:style="{background: this.stroke.hex}")
+            draggable-input(id="strokeWidth" v-model="strokeWidth" label="STROKE WIDTH")
           chrome-picker(v-show="fillDialog" v-model="fill" @input="$emit('hey')" disable-alpha=true)
-          label(for="stroke") Stroke
-          div.color-toggle(@click="strokeDialog = !strokeDialog" v-bind:style="{background: this.stroke.hex}") {{ strokeDialog ? 'Hide' : 'Edit'}}
           chrome-picker(v-show="strokeDialog" v-model="stroke" @input="$emit('hey')" disable-alpha=true)
-      .row.row--input
-        .input-field
-          draggable-input(id="strokeWidth" v-model="strokeWidth" label="Stroke Width")
 </template>
 
 <script>
