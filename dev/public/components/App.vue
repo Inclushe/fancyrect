@@ -258,9 +258,10 @@ export default {
         &:active
           background: lighten(#1E1766, 75%)
     .cards
-      max-height: 95%
+      max-height: calc(100% - 6em)
       padding: 0 1em
       overflow-y: auto
+      overflow-x: hidden
   input.vc-input__input, .vc-input__label
     font-family: 'Iosevka Web', monospace !important
   .card
